@@ -19,9 +19,13 @@ Lineage_wATAC, on GEO:
 Fastqs associated with lineage targets captured alongside ATAC, separated by plate & well/index #2 (plate 8 does not exist)
 
 Processed Lineage Data (github):
+
 lineage_profiles_wATAC.txt
+
 lineage_profiles_wRNA.txt
+
 tree_file_LinATAC
+
 tree_file_LinRNA
 
 
