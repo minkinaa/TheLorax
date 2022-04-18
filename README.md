@@ -2,7 +2,7 @@
 
 Data & Code Availabiliy
 
-GEO:
+# GEO:
 
 RNA:
 - Raw expression data (fastq), separated by plates. Each plate contains 96 Read1-Read2 paired files, each associated with a single well (i.e. index #2 during combinatorial indexing). Read2 contains a UMI & index #1. An index #1 list is available on github.
@@ -17,3 +17,6 @@ Fastqs associated with lineage targets captured alongside RNA, separated by plat
 
 Lineage_wATAC:
 Fastqs associated with lineage targets captured alongside ATAC, separated by plate & well/index #2 (plate 8 does not exist)
+
+
+## Code:
