@@ -1,0 +1,43 @@
+#!/bin/bash
+
+module unload mpc/0.8.2
+module unload mpfr/3.1.0
+module unload gmp/5.0.2
+module load gcc/8.1.0
+
+module load python/2.7.3
+module load cutadapt/1.8.3
+module load trim_galore/0.4.1
+
+module load STAR/2.5.2b
+module load samtools/1.4
+
+STAR --genomeDir /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/GRCh38_primary_assembly --genomeLoad Remove
+
+for folder in *RNA*;
+do
+  PCR_well=$(echo $folder | awk '{split($0,a,"-"); print a[1]}')
+  echo "folder="$folder
+  echo "PCR_well="$PCR_well
+  cd ${folder}
+  touch ${PCR_well}_log
+  >${PCR_well}_log
+  gunzip *R1*
+  echo "R1 unzipped!"
+  gunzip *R2*
+  echo "R2 unzipped!"
+  touch ${PCR_well}_trimmed_and_combined.fastq
+  >${PCR_well}_trimmed_and_combined.fastq
+  /net/shendure/vol1/home/minkinaa/scripts/GIANT_TREE_scripts/RNA_processing_scripts/190221_RNA_trimming_and_combining *R1* *R2* ${PCR_well}_trimmed_and_combined.fastq ${PCR_well}
+  echo "combined! Now running trim_galore"
+  trim_galore --illumina --length 20 *trimmed_and_combined.fastq
+  echo "done trimming, now aligning"
+  STAR --runThreadN 12 --genomeDir /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/GRCh38_primary_assembly --readFilesIn *trimmed.fq --outFileNamePrefix ${PCR_well}_ --outReadsUnmapped Fastx --genomeLoad LoadAndKeep
+  echo "done aligning; running samtools commands"
+  samtools view -u *Aligned.out.sam | samtools sort -@ 12 -o ${PCR_well}_Aligned.sorted.bam
+  samtools view -b -q 254 *Aligned.sorted.bam > ${PCR_well}_Aligned.unique.mapped.bam
+  samtools view *Aligned.unique.mapped.bam > ${PCR_well}_Aligned.unique.mapped.sam
+  cd ..
+done
+
+STAR --genomeLoad Remove --genomeDir /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/GRCh38_primary_assembly

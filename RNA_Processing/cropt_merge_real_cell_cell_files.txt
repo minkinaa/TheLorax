@@ -1,0 +1,27 @@
+#!/bin/bash
+
+#$1: Joint outfile
+
+module load bedtools/2.26.0
+first=true
+>$1
+
+for folder in *RNA*;
+do
+  PCR_well=$(echo $folder | awk '{split($0,a,"-"); print a[1]}')
+  echo "folder="$folder
+  echo "PCR_well="$PCR_well
+  cd ${folder}
+  touch ${PCR_well}_dedup_just_real_cells
+  >${PCR_well}_dedup_just_real_cells
+  touch ${PCR_well}_dedup_new_cell_line_nums
+  >${PCR_well}_dedup_new_cell_line_nums
+  /net/shendure/vol1/home/minkinaa/scripts/GIANT_TREE_scripts/RNA_processing_scripts/190223_sciRNA_remove_noncells_from_sam ${PCR_well}_real_RT_index_list ${PCR_well}_dedup_out.sam ${PCR_well}_dedup_just_real_cells ${PCR_well}_dedup_new_cell_line_nums
+  if [ "$first" = true ] ; then
+    samtools view -H ${PCR_well}_Aligned.out.sam >> $1
+    first=false
+  fi
+  cat ${PCR_well}_dedup_just_real_cells >> $1
+  cd ..
+done
+

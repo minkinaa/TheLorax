@@ -1,0 +1,21 @@
+#!/bin/bash
+
+mapped_input_file=$1
+prefix=$2
+
+gene_list="/net/shendure/vol1/home/minkinaa/reference_files/RNA_seq_bed_files/All_genes_hg38"
+
+touch ${prefix}_Unmapped_bed_file
+>${prefix}_Unmapped_bed_file
+
+touch ${prefix}_Multimapped_bed_file
+>${prefix}_Multimapped_bed_file
+
+touch ${prefix}_Cell_by_gene_outfile
+>${prefix}_Cell_by_gene_outfile
+
+touch ${prefix}_Insertion_count_outfile
+>${prefix}_Insertion_count_outfile
+
+/net/shendure/vol1/home/minkinaa/scripts/RNA_seq_analysis_scripts/190704_process_sciRNA_mapped_file ${gene_list} ${mapped_input_file} ${prefix}_Unmapped_bed_file ${prefix}_Multimapped_bed_file ${prefix}_Cell_by_gene_outfile ${prefix}_Insertion_count_outfile
+

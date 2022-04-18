@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#$1: analysis file
+
+>$1
+
+for folder in *RNA*;
+do
+  PCR_well=$(echo $folder | awk '{split($0,a,"-"); print a[1]}')
+  echo "folder="$folder
+  echo "PCR_well="$PCR_well
+  cd ${folder}
+  touch ${PCR_well}_dedup_out.sam
+  >${PCR_well}_dedup_out.sam
+  touch ${PCR_well}_dedup_tossed.sam
+  >${PCR_well}_dedup_tossed.sam
+  touch ${PCR_well}_read_and_dedup_metrics
+  >${PCR_well}_read_and_dedup_metrics
+  touch ${PCR_well}_bad_index_counts
+  >${PCR_well}_bad_index_counts
+  echo "Running deduplication"
+  /net/shendure/vol1/home/minkinaa/scripts/GIANT_TREE_scripts/RNA_processing_scripts/190223_sciRNA_remove_duplicates /net/shendure/vol1/home/minkinaa/reference_files/index_files/Plate6_RT_barcode_list.txt ${PCR_well}_Aligned.unique.mapped.sam ${PCR_well}_dedup_out.sam ${PCR_well}_dedup_tossed.sam ${PCR_well}_read_and_dedup_metrics ${PCR_well}_bad_index_counts
+  #echo "Finished deduplication for "${PCR_well}
+  sed -e "s/^/${PCR_well}_/" ${PCR_well}_read_and_dedup_metrics >> $1
+  cd ..
+done

@@ -1,0 +1,59 @@
+#RNA processing wrapper
+
+#!/bin/bash
+
+module unload mpc/0.8.2
+module unload mpfr/3.1.0
+module unload gmp/5.0.2
+module load gcc/8.1.0
+
+output_dir=$1
+prefix=$2
+sample_name=$3
+
+#move "fi" below whatever has already been run
+if [ 1 -eq 0 ]; then
+ echo "shouldn't ever pop up"
+fi
+
+/net/shendure/vol1/home/minkinaa/scripts/Make_dirs_from_fq_file_names.txt
+/net/shendure/vol1/home/minkinaa/scripts/move_files_to_folder.txt
+
+/net/shendure/vol1/home/minkinaa/scripts/GIANT_TREE_scripts/RNA_processing_scripts/Run_seq_trimming_on_all_folders.txt
+
+#this is where output_dir etc uesd to be
+
+touch ${output_dir}/${prefix}_${sample_name}_combined_dedup_metrics
+>${output_dir}/${prefix}_${sample_name}_combined_dedup_metrics
+
+/net/shendure/vol1/home/minkinaa/scripts/GIANT_TREE_scripts/RNA_processing_scripts/Run_dedup_on_all_folders.txt ${output_dir}/${prefix}_${sample_name}_combined_dedup_metrics
+
+echo "What cutoff do you want to use? (typically, 2048):"
+
+read cutoff
+
+touch ${output_dir}/${prefix}_${sample_name}_combined_real_cells
+>${output_dir}/${prefix}_${sample_name}_combined_real_cells
+
+/net/shendure/vol10/projects/AM_Heterogeneity/nobackup/190208_full_indexes_cropti_sci_nextseq/analysis/RNA_analysis/Run_extract_real_cell_RT_indices_on_all_folders.txt $cutoff ${output_dir}/${prefix}_${sample_name}_combined_real_cells
+
+touch ${output_dir}/${prefix}_${sample_name}_combined_real_cell_samfile
+>${output_dir}/${prefix}_${sample_name}_combined_real_cell_samfile
+
+module load samtools/1.4
+/net/shendure/vol1/home/minkinaa/scripts/GIANT_TREE_scripts/RNA_processing_scripts/cropt_merge_real_cell_cell_files.txt ${output_dir}/${prefix}_${sample_name}_combined_real_cell_samfile
+
+cd ${output_dir}
+module load bedtools/2.26.0
+samtools view -bh ${prefix}_${sample_name}_combined_real_cell_samfile | bedtools bamtobed -i - -split > ${prefix}_${sample_name}_combined_real_cell_bedfile_w_splitting
+
+cat ${prefix}_${sample_name}_combined_real_cell_bedfile_w_splitting | sort -k1,1 -k2,2n > ${prefix}_${sample_name}_combined_real_cell_bedfile_w_splitting_sorted
+
+bedtools map -a ${prefix}_${sample_name}_combined_real_cell_bedfile_w_splitting_sorted -b /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/gencode.v29.exons.bed -nonamecheck -g /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/v29_Name_Length_file_sorted -s -f 0.95 -c 7 -o distinct | bedtools map -a - -b /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/gencode.v29.genes.bed -nonamecheck -g /net/shendure/vol1/home/minkinaa/STAR_indices/human_hg38/v29_Name_Length_file_sorted -s -f 0.95 -c 4 -o distinct > ${prefix}_${sample_name}_all_cells_mapped_to_genes_w_splitting
+
+/net/shendure/vol1/home/minkinaa/scripts/RNA_seq_analysis_scripts/190705_sciRNA_cell_by_gene_counts_wrapper_script_CLUSTER_version.txt ${prefix}_${sample_name}_all_cells_mapped_to_genes_w_splitting ${prefix}_${sample_name}
+
+
+
+
+

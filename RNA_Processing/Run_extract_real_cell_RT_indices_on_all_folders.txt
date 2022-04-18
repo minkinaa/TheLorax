@@ -1,0 +1,19 @@
+#!/bin/bash
+
+#$1: Number of unique reads cutoff
+#$2: All real index outfile
+
+>$2
+
+for folder in *RNA*;
+do
+  PCR_well=$(echo $folder | awk '{split($0,a,"-"); print a[1]}')
+  echo "folder="$folder
+  echo "PCR_well="$PCR_well
+  cd ${folder}
+  touch ${PCR_well}_real_RT_index_list
+  >${PCR_well}_real_RT_index_list
+  /net/shendure/vol10/projects/AM_Heterogeneity/nobackup/190208_full_indexes_cropti_sci_nextseq/analysis/RNA_analysis/190223_sciRNA_make_real_RT_index_list ${PCR_well}_read_and_dedup_metrics $1 > ${PCR_well}_real_RT_index_list
+  sed -e "s/^/${PCR_well}_/" ${PCR_well}_real_RT_index_list >> $2
+  cd ..
+done
