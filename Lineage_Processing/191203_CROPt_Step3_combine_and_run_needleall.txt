@@ -1,0 +1,29 @@
+#!/bin/bash
+
+output_dir=$1
+prefix=$2
+sample_name=$3
+index_file=$4
+
+touch ${output_dir}/${prefix}_${sample_name}_collapsed_UMIs
+>${output_dir}/${prefix}_${sample_name}_collapsed_UMIs
+
+touch ${output_dir}/${prefix}_${sample_name}_collapsed_UMIs.fasta
+>${output_dir}/${prefix}_${sample_name}_collapsed_UMIs.fasta
+
+for folder in *TARG*;
+do
+  PCR_well=$(echo $folder | awk '{split($0,a,"_"); print a[1]}')
+  cd ${folder}
+  cat ${PCR_well}_UMI_counts_per_seq >> ${output_dir}/${prefix}_${sample_name}_collapsed_UMIs
+  cat ${PCR_well}_UMI_counts_per_seq.fasta >> ${output_dir}/${prefix}_${sample_name}_collapsed_UMIs.fasta
+  cd ..
+done
+
+touch ${output_dir}/${prefix}_${sample_name}_aligned_to_ref.fasta
+>${output_dir}/${prefix}_${sample_name}_aligned_to_ref.fasta
+
+module load EMBOSS/6.4.0
+
+needleall -asequence /net/shendure/vol1/home/minkinaa/reference_files/fasta_references/cropt_ref_seq.fasta -bsequence ${output_dir}/${prefix}_${sample_name}_collapsed_UMIs.fasta -outfile ${output_dir}/${prefix}_${sample_name}_aligned_to_ref.fasta -aformat fasta
+

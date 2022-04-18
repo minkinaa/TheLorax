@@ -1,0 +1,34 @@
+for folder in *TARG*;
+do
+  plate_num=$1
+  PCR_well=$(echo $folder | awk '{split($0,a,"_"); print a[1]}')
+  just_PCR_well=$(echo $folder | awk '{split($0,a,"-"); print a[1]}')
+  echo "folder="$folder
+  echo "PCR_well="$PCR_well
+  cd ${folder}
+  touch ${PCR_well}_log
+  >${PCR_well}_log
+  echo -e "Assembled_reads"' \t '$(( $(cat *assembled.fastq* | wc -l)/4 )) >> *_log
+  Assembled_reads=$(( $(cat *assembled.fastq* | wc -l)/4 ))
+  touch ${PCR_well}_grep_ATTGGTCTTA
+  >${PCR_well}_grep_ATTGGTCTTA
+  grep -Eh 'ATTGGTCTTA|CGTAAGGTCT' *assembled.fastq* > ${PCR_well}_grep_ATTGGTCTTA
+  paste -d "" *unassembled.forward.fastq* *unassembled.reverse.fastq* > ${PCR_well}_merged_unassembled
+  grep -Eh 'ATTGGTCTTA|CGTAAGGTCT' ${PCR_well}_merged_unassembled >> ${PCR_well}_grep_ATTGGTCTTA
+  Reads_after_grep1=$(cat ${PCR_well}_grep_ATTGGTCTTA | wc -l)
+  echo -e "After_grep_ATTGGTCTTA"' \t '${Reads_after_grep1} >> *_log
+  echo -e "Num_sequences: "' \t '${Reads_after_grep1}
+  echo -e "After_grep_percent"' \t '$(awk "BEGIN {print ${Reads_after_grep1}/${Assembled_reads}}") >> *_log
+  sort ${PCR_well}_grep_ATTGGTCTTA > sorted_${PCR_well}_grep_ATTGGTCTTA
+  touch ${PCR_well}_UMI_RT_BC_seq_output
+  >${PCR_well}_UMI_RT_BC_seq_output
+  /net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/191203_CROPt_make_UMI_RT_BC_seq_output_file sorted_${PCR_well}_grep_ATTGGTCTTA ${PCR_well}_UMI_RT_BC_seq_output
+  touch ${PCR_well}_collapsed_by_UMIs
+  >${PCR_well}_collapsed_by_UMIs
+  touch ${PCR_well}_UMI_counts_per_seq
+  >${PCR_well}_UMI_counts_per_seq
+  touch ${PCR_well}_UMI_counts_per_seq.fasta
+  >${PCR_well}_UMI_counts_per_seq.fasta
+  /net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/191203_CROPt_collapse_by_UMIs ${PCR_well}_UMI_RT_BC_seq_output /net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/clone36_target_list /net/shendure/vol1/home/minkinaa/reference_files/index_files/Plate6_RT_barcode_list.txt ${PCR_well}_collapsed_by_UMIs ${PCR_well}_UMI_counts_per_seq ${just_PCR_well} ${plate_num} ${PCR_well}_UMI_counts_per_seq.fasta
+  cd ..
+done

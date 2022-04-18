@@ -1,0 +1,37 @@
+#!/bin/bash
+
+local_output_dir=$1
+prefix=$2
+sample_name=$3
+maxdist=$4
+list_of_targets=$5
+
+touch ${local_output_dir}/${prefix}_${sample_name}_matrix_maxdist${maxdist}
+>${local_output_dir}/${prefix}_${sample_name}_matrix_maxdist${maxdist}
+touch ${local_output_dir}/${prefix}_${sample_name}_edited_matrix_maxdist${maxdist}
+>${local_output_dir}/${prefix}_${sample_name}_edited_matrix_maxdist${maxdist}
+touch ${local_output_dir}/${prefix}_${sample_name}_unedited_matrix_maxdist${maxdist}
+>${local_output_dir}/${prefix}_${sample_name}_unedited_matrix_maxdist${maxdist}
+touch ${local_output_dir}/${prefix}_${sample_name}_MAIN_OUTPUT_maxdist${maxdist}
+>${local_output_dir}/${prefix}_${sample_name}_MAIN_OUTPUT_maxdist${maxdist}
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/191205_CROPt_fasta_to_MAIN_OUTPUT/Debug/191205_CROPt_fasta_to_MAIN_OUTPUT ${local_output_dir}/${prefix}_${sample_name}_aligned_to_ref.fasta ${local_output_dir}/${prefix}_${sample_name}_matrix_maxdist${maxdist} ${local_output_dir}/${prefix}_${sample_name}_edited_matrix_maxdist${maxdist} ${local_output_dir}/${prefix}_${sample_name}_unedited_matrix_maxdist${maxdist} ${maxdist} ${local_output_dir}/${prefix}_${sample_name}_MAIN_OUTPUT_maxdist${maxdist}
+
+touch ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_E_or_U_outfile
+>${local_output_dir}/${prefix}_${sample_name}_cell_by_target_E_or_U_outfile
+touch ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_most_abundant_umi_count_outfile
+>${local_output_dir}/${prefix}_${sample_name}_cell_by_target_most_abundant_umi_count_outfile
+touch ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_total_umi_count_outfile
+>${local_output_dir}/${prefix}_${sample_name}_cell_by_target_total_umi_count_outfile
+touch ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_cigar_outfile
+>${local_output_dir}/${prefix}_${sample_name}_cell_by_target_cigar_outfile
+touch ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_conflicts_outfile
+>${local_output_dir}/${prefix}_${sample_name}_cell_by_target_conflicts_outfile
+touch ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_correlation_outfile
+>${local_output_dir}/${prefix}_${sample_name}_cell_by_target_correlation_outfile
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/191205_CROPt_cell_by_target_matrices_NEW/Debug/191205_CROPt_cell_by_target_matrices_NEW ${list_of_targets} ${local_output_dir}/${prefix}_${sample_name}_MAIN_OUTPUT_maxdist${maxdist} ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_E_or_U_outfile ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_most_abundant_umi_count_outfile ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_total_umi_count_outfile ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_cigar_outfile ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_conflicts_outfile ${local_output_dir}/${prefix}_${sample_name}_cell_by_target_correlation_outfile 10
+
+echo "Made it through second script"
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/190219_make_cell_by_barcode_matrix/Debug/190219_make_cell_by_barcode_matrix ${local_output_dir}/${prefix}_${sample_name}_collapsed_UMIs > ${local_output_dir}/${prefix}_${sample_name}_cell_by_bc_matrix

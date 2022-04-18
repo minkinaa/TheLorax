@@ -1,0 +1,34 @@
+#!/bin/bash
+
+for folder in *TARG*;
+do
+  if [ -d "${folder}" ]; then
+    #echo "folder="$folder
+      cd ${folder}
+      counter=0
+
+      for file in *.fastq.gz;
+      do
+	tempgzfile=${file}
+	read_or_index=$(echo $tempgzfile | awk '{split($0,a,"."); print a[1]}' | awk '{split($0,a,"_"); print a[4]}')
+	if [ "$read_or_index" == "R1" ]; then
+	  #echo "R1_file ="${tempgzfile}
+	  R1_file=${tempgzfile}
+	  let "counter += 1"
+	elif [ "$read_or_index" == "R2" ]; then
+	  #echo "R2_file="${tempgzfile}
+          R2_file=${tempgzfile}
+          let "counter += 1"
+	fi
+      done
+      
+      if [ $counter -eq 2 ]; then
+	echo "running atac script on "${folder}
+        /net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/CROPt_step1_trim_merge_R1_R2.txt ${R1_file} ${R2_file}
+	echo "done running"${folder}
+        let "counter += 1"
+      fi
+
+      cd ..
+  fi
+done

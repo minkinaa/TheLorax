@@ -1,0 +1,19 @@
+/net/shendure/vol1/home/minkinaa/scripts/Make_dirs_from_fq_file_names.txt
+
+/net/shendure/vol1/home/minkinaa/scripts/move_files_to_folder.txt
+
+/net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/CROPt_step1_trim_merge_R1_R2_wrapper.txt
+
+/net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/191203_CROPt_Step2_collapse_UMIs_wrapper.txt 4
+
+/net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/191203_CROPt_Step3_combine_and_run_needleall.txt \
+/net/shendure/vol10/projects/AM_Heterogeneity/nobackup/190722_Tree29_all_plates/Tree29_Target_plate2thru8/analysisNewPipeline \
+190624_Tree29 \
+plate4
+
+191205_local_target_analysis_all_UPDATED.txt output_dir plate5 4 ordered_clone36_target_list.csv
+
+190325_process_all_cell_by_target_outputs_barnyard.R
+
+*** After this, filter cells by expression UMI to remove doublets
+

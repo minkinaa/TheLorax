@@ -1,0 +1,32 @@
+#!/bin/bash
+
+prefix1=$(echo $1 | awk '{split($0,a,"."); print a[1]}' | awk '{split($0,a,"_"); print a[1]"_" a[2]"_"a[4]}')
+prefix2=$(echo $2 | awk '{split($0,a,"."); print a[1]}' | awk '{split($0,a,"_"); print a[1]"_" a[2]"_"a[4]}')
+prefixall=$(echo $1 | awk '{split($0,a,"."); print a[1]}' | awk '{split($0,a,"_"); print a[1]"_"a[2]}')
+
+
+trimmed_paired_1=$(echo ${prefix1}".trimmed.paired.fastq.gz")
+trimmed_paired_2=$(echo ${prefix2}".trimmed.paired.fastq.gz")
+
+trimmed_unpaired_1=$(echo ${prefix1}".trimmed.unpaired.fastq.gz")
+trimmed_unpaired_2=$(echo ${prefix2}".trimmed.unpaired.fastq.gz")
+
+unzipped_trimmed_paired_1=$(echo ${prefix1}".trimmed.paired.fastq")
+unzipped_trimmed_paired_2=$(echo ${prefix2}".trimmed.paired.fastq") 
+
+trim_log=$(echo ${prefixall}"_trimmomatic.log")
+
+#TRIM READS
+java -Xmx1G -jar /net/shendure/vol1/home/cusanovi/bin/Trimmomatic-0.32/trimmomatic-0.32.jar PE $1 $2 $trimmed_paired_1 $trimmed_unpaired_1 $trimmed_paired_2 $trimmed_unpaired_2 ILLUMINACLIP:/net/shendure/vol1/home/cusanovi/bin/Trimmomatic-0.32/adapters/NexteraPE-PE.fa:2:30:10:1:true TRAILING:3 SLIDINGWINDOW:4:10 MINLEN:20 2> $trim_log
+
+#MERGE READS
+gunzip $trimmed_paired_1
+gunzip $trimmed_paired_2
+
+pear -f $unzipped_trimmed_paired_1 -r $unzipped_trimmed_paired_2 -o $prefixall 
+
+gzip $unzipped_trimmed_paired_1
+gzip $unzipped_trimmed_paired_2
+
+
+

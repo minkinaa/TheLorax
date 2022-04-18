@@ -1,0 +1,15 @@
+#!/bin/bash
+
+for i in *.fastq.gz;
+do
+	tempfoldername=$(echo $i | awk '{split($0,a,"."); print a[1]}' | awk '{split($0,a,"_"); print a[1]"_"a[2]}')
+	#echo $tempfoldername
+	
+	if [ -d "$tempfoldername" ]; then
+		continue
+		#echo "already exists"
+	else
+		mkdir $tempfoldername
+		#echo "no directory by that name"
+	fi
+done
