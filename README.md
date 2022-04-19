@@ -31,9 +31,11 @@ tree_file_LinRNA
 
 ## Code:
 
-RNA processing to generate cell by gene files implemented in wrapper script 190807_sciRNA_wrapper_ALL.txt. Internal code & input files have been uploaded to the folder "RNA_Processing"; some contain hard-coded file paths. Downstream processing and visualization code located in internal folders. 
+*Some scripts contain hard-coded file paths
 
-Initial lineage data processing to generate cell lineage profiles is outlined in Lineage_Generate_Profiles_Sample_Commands.txt. Internal code and input files in folder "Lineage_Processing"; some contain hard-coded file paths.
+RNA processing to generate cell by gene files implemented in wrapper script 190807_sciRNA_wrapper_ALL.txt. Internal code & input files have been uploaded to the folder "RNA_Processing." Downstream processing and visualization code located in internal folders. 
+
+Initial lineage data processing to generate cell lineage profiles is outlined in Lineage_Generate_Profiles_Sample_Commands.txt. Internal code and input files in folder "Lineage_Processing."
 
 Code and associated files for downstream lineage processing (splitting duplicated targets, correcting missing data, tree building & visualization) can be found in folder "Lineage_Tree_Building_etc." 
 
