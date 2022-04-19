@@ -1,0 +1,43 @@
+#!/bin/bash
+
+#This is be a wrapper for 200114_ASEs_for_lineage_groups
+
+module unload mpc/0.8.2
+module unload mpfr/3.1.0
+module unload gmp/5.0.2
+module load gcc/8.1.0
+
+module load samtools/1.9
+
+folder_of_4_col_files=$1
+plate=$2 ##Allplates
+output_dir=$3
+min_cutoff=$4 ##0
+lin_groups=$5 ##1:42
+lin_group_file=$6 ##AllCell_GroupNum_2col
+chr=$7 ##chr3
+start_pos=$8 ##0
+end_pos=$9 ##248956422
+folder_of_het_positions_per_chr=${10}
+
+#touch temp_output_file
+#>temp_output_file
+
+touch ${output_dir}/${plate}_${chr}_grp${lin_groups}_base_counts_per_position
+>${output_dir}/${plate}_${chr}_grp${lin_groups}_base_counts_per_position
+
+echo ${folder_of_het_positions_per_chr}/${plate}_${chr}_het_positions
+
+#cat ${samfile} | awk -v var="$chr" 'BEGIN { FS = "\t" } ; {if ($3 == var) print $0;}' | awk 'BEGIN { FS = "\t" } ; { print $1"\t"$4"\t"$6"\t"$10 }' > ${output_dir}/${plate}_${chr}_4_col_sam
+#wc -l ${output_dir}/${plate}_${chr}_4_col_sam
+/net/shendure/vol1/home/minkinaa/scripts/191203_NEW_CROPt_pipeline_files/200114_ASEs_for_lineage_groups \
+${chr} \
+248956422 \
+${folder_of_4_col_files}/${plate}_${chr}_4_col_sam \
+${output_dir}/${plate}_${chr}_grp${lin_groups}_base_counts_per_position \
+${min_cutoff} \
+${lin_groups} \
+${start_pos} \
+${end_pos} \
+${lin_group_file} \
+${folder_of_het_positions_per_chr}/${plate}_${chr}_het_positions
