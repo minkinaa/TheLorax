@@ -35,7 +35,7 @@ RNA processing to generate cell by gene files implemented in wrapper script 1908
 
 Initial lineage data processing to generate cell lineage profiles is outlined in Lineage_Generate_Profiles_Sample_Commands.txt. Internal code and input files in folder "Lineage_Processing"; some contain hard-coded file paths.
 
-Code and associated files for downstream lineage processing (splitting duplicated targets, correcting missing data, tree building) can be found in folder "Lineage_Tree_Building_etc." 
+Code and associated files for downstream lineage processing (splitting duplicated targets, correcting missing data, tree building & visualization) can be found in folder "Lineage_Tree_Building_etc." 
 
 
 
