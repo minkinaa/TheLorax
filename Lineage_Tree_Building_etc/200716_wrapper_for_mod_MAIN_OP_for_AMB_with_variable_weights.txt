@@ -1,0 +1,72 @@
+#!/bin/bash
+
+output_dir=$1
+main_output_file=$2
+cigar_file=$3
+new_cigar_prefix=$4
+weight_match_edits=$5
+weights_both_unedited=$6
+
+target="TTAGTAGGTC"
+
+Rscript /Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/Scripts/200716_CROPt_mod_MAIN_OP_for_AMB_fixes.R \
+${target} \
+${output_dir} \
+${cigar_file} \
+${main_output_file}
+
+touch ${output_dir}/${new_cigar_prefix}"_1"
+>${output_dir}/${new_cigar_prefix}"_1"
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/191216_split_column_in_cigar/Debug/191216_split_column_in_cigar \
+24M12D34M:,31M14I1M1N3M35I34M:TTCTTAAAAGCTGGTGATAAAAGGGTAATGTCACCCTGGAAGGACTGAGC,22M5D3M2N1M2I2M4I2M1D1N31M:TAATTCTTT \
+30M8D32M: \
+${output_dir}/${cigar_file} \
+${output_dir}"/Table_input_to_split_target_"${target} \
+${target} \
+${output_dir}/${new_cigar_prefix}"_1"
+
+target="GTGGTTGTGG"
+
+Rscript /Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/Scripts/200716_CROPt_mod_MAIN_OP_for_AMB_fixes.R \
+${target} \
+${output_dir} \
+${cigar_file} \
+${main_output_file}
+
+touch ${output_dir}/${new_cigar_prefix}"_2"
+>${output_dir}/${new_cigar_prefix}"_2"
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/191216_split_column_in_cigar/Debug/191216_split_column_in_cigar \
+35M1I35M:A,24M12D34M:,34M2D34M:,30M12D28M \
+36M1I34M:T \
+${output_dir}/${new_cigar_prefix}"_1" \
+${output_dir}"/Table_input_to_split_target_"${target} \
+${target} \
+${output_dir}/${new_cigar_prefix}"_2"
+
+touch ${output_dir}/Corrected_${new_cigar_prefix}"_1"
+>${output_dir}/Corrected_${new_cigar_prefix}"_match-"${5}"_uned-"${6}"_1"
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/Scripts/191215_wrapper_for_correcting_missing_data_cpp_with_weights_as_args.txt \
+${output_dir}/${new_cigar_prefix}"_2" \
+1 \
+${output_dir}/Corrected_${new_cigar_prefix}"_match-"${5}"_uned-"${6}"_1" \
+$5 \
+$6
+
+cat ${output_dir}/Corrected_${new_cigar_prefix}"_match-"${5}"_uned-"${6}"_1" | awk '{if(NR>1)print}' > ${output_dir}/Corrected_${new_cigar_prefix}"_match-"${5}"_uned-"${6}"_1_NoColNames"
+
+cd ${output_dir}
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/Scripts/1900820_distance_matrix_bash_wrapper_script_2_weights_as_args_2.txt ${output_dir}/Corrected_${new_cigar_prefix}"_match-"${5}"_uned-"${6}"_1_NoColNames" $5 $6
+
+
+
+
+
+
+
+
+
+
+

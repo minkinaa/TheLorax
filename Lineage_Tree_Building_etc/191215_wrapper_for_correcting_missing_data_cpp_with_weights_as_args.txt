@@ -1,0 +1,33 @@
+#!/bin/bash
+
+Run_num=$2
+Output_file=$3
+weight_same=$4
+weight_both_70=$5
+
+weight_same_edit=$4
+weight_both_70M=$5
+weight_one_X="0"
+weight_at_least_one_AMB="0"
+weight_diff_edits="0"
+weight_one_70_one_edited="0"
+weight_both_X="0"
+weight_both_AMB="0"
+
+touch Log_Distance_Mat_Run_${Run_num}
+>Log_Distance_Mat_Run_${Run_num}
+
+touch Non_Normalized_Distance_Mat_${Run_num}
+>Non_Normalized_Distance_Mat_${Run_num}
+
+echo "Run_num="${Run_num} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_same_edit="${weight_same_edit} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_both_70M="${weight_both_70M} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_one_X="${weight_one_X} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_at_least_one_AMB="${weight_at_least_one_AMB} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_diff_edits="${weight_diff_edits} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_one_70_one_edited="${weight_one_70_one_edited} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_both_X="${weight_both_X} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_both_AMB="${weight_both_AMB} >> Log_Distance_Mat_Run_${Run_num}
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/191215_CROPt_correct_missing_data/Debug/191215_CROPt_correct_missing_data $1 ${weight_same_edit} ${weight_both_70M} ${weight_one_X} ${weight_at_least_one_AMB} ${weight_diff_edits} ${weight_one_70_one_edited} ${weight_both_X} ${weight_both_AMB} ${Output_file}

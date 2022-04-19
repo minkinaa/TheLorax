@@ -1,0 +1,14 @@
+#!/bin/bash
+
+for i in {2..8}
+do
+  second_plate=${i}
+  echo "currently on plate "${second_plate}
+  /Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/Scripts/200716_wrapper_for_mod_MAIN_OP_for_AMB_with_variable_weights.txt \
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/190722_Tree29_other7plates/TARG_plates2thru8/200623_NewPipelineAnalysis/CorrectingData/p1_p${second_plate}_AMBcorr_Xcorr \
+p1_p${second_plate}_combined_MAIN_OUTPUT \
+p1_p${second_plate}_cigar_greater_than_0_ORDwCOL \
+p1_p${second_plate}_AMBcorr_Xcorr_cigar \
+5 \
+1
+done

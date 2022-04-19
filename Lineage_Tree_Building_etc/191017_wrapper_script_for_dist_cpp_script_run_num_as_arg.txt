@@ -1,0 +1,57 @@
+##this script adds two weights: both X and both ambiguous
+
+##Hey, these weights need to be whole numbers!!! They are deisgnated as ints in cpp program!!!
+
+Run_num=$4
+
+weight_same_edit="1"
+weight_both_70M="0"
+weight_one_X="0"
+weight_at_least_one_AMB="0"
+weight_diff_edits="0"
+weight_one_70_one_edited="0"
+weight_both_X="0"
+weight_both_AMB="0"
+
+old_cell_cigar_file=$1
+lineage_group_file_old_cells=$2
+new_cell_cigar_file=$3
+
+touch Log_Distance_Mat_Run_${Run_num}
+>Log_Distance_Mat_Run_${Run_num}
+
+touch OldCells_NewCells_Distance_Mat_${Run_num}
+>OldCells_NewCells_Distance_Mat_${Run_num}
+
+touch AllCells_Lineage_Groups_${Run_num}
+>AllCells_Lineage_Groups_${Run_num}
+
+touch All_Unique_Editing_Patters_${Run_num}
+>All_Unique_Editing_Patters_${Run_num}
+
+echo "Run_num="${Run_num} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_same_edit="${weight_same_edit} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_both_70M="${weight_both_70M} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_one_X="${weight_one_X} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_at_least_one_AMB="${weight_at_least_one_AMB} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_diff_edits="${weight_diff_edits} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_one_70_one_edited="${weight_one_70_one_edited} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_both_X="${weight_both_X} >> Log_Distance_Mat_Run_${Run_num}
+echo "weight_both_AMB="${weight_both_AMB} >> Log_Distance_Mat_Run_${Run_num}
+
+/Users/anna/Documents/UW_GS/Shendure_Lab/Projects/Many_targets_ideas/CROPt/CROPt_pipeline_files/cpp_CROPt_workspace/191017_two_group_distances_updated/Debug/191017_two_group_distances_updated \
+${old_cell_cigar_file} \
+${weight_same_edit} \
+${weight_both_70M} \
+${weight_one_X} \
+${weight_at_least_one_AMB} \
+${weight_diff_edits} \
+${weight_one_70_one_edited} \
+${weight_both_X} \
+${weight_both_AMB} \
+${lineage_group_file_old_cells} \
+OldCells_NewCells_Distance_Mat_${Run_num} \
+${new_cell_cigar_file} \
+AllCells_Lineage_Groups_${Run_num} \
+All_Unique_Editing_Patters_${Run_num}
+
