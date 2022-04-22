@@ -28,7 +28,7 @@ tree_file_LinATAC
 
 tree_file_LinRNA
 
-### Cell IDs found in the processed data file are related to raw fastq files as follows:
+Cell IDs found in the processed data file are related to raw fastq files as follows:
 
 sciRNA_lib: Each fastq pair file contains information from 25 cells (or less). The cell IDs are a combination of the plate/batch, PCR well index (index #2) during combinatorial indexing (in fastq file name), and index #1, the last 10 bases of the the read1 sequence. E.g. the raw data for the cell called "p1A10_ACTAATTGAG", can be found in the raw data file "p1A10-RNA_CCAGGTCTAC_S10", with those sequences with "ACTAATTGAG" as the last 10 bases in the R1 file corresponding to this cell. The first 8 bases of R1 are the UMI.
 
